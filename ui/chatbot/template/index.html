@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HCMUS Chatbot - Sổ tay Sinh viên Năm học 2025-2026</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Markdown renderer for nicely formatted AI answers (tables, headings, lists, ...) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body class="bg-white">
+
+  <!-- Main Container -->
+  <div class="container mx-auto max-w-7xl min-h-screen flex flex-col">
+
+    <!-- Initial Interface -->
+    <div id="initialInterface" class="initial-interface">
+      <!-- Title -->
+      <h1 class="text-4xl font-semibold text-blue-600 tracking-tight text-center mb-10">
+        Tôi có thể giúp gì cho bạn?
+      </h1>
+
+      <!-- Input Box -->
+      <div class="flex items-center justify-center w-full max-w-3xl space-x-4">
+        <input id="messageInput" type="text" placeholder="Message..."
+          class="flex-1 bg-white border border-blue-200 rounded-full px-6 py-4 text-lg outline-none focus:border-blue-500" />
+
+        <button id="sendButton" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 transition-all">
+          ➤
+        </button>
+      </div>
+    </div>
+
+    <!-- Chat Interface -->
+    <div id="chatInterface" class="chat-interface">
+
+      <!-- Messages Area với wrapper mới -->
+      <div class="messages-wrapper">
+        <div id="messages" class="chat-container flex-1">
+          <!-- Bỏ tin nhắn chào mừng mặc định -->
+        </div>
+      </div>
+        <!-- External scrollbar -->
+        <div class="external-scrollbar">
+          <div class="external-scrollbar-track">
+            <div class="external-scrollbar-thumb"></div>
+          </div>
+        </div>
+
+      <!-- Input Area -->
+      <div class="input-area">
+        <div class="flex items-center justify-center w-full max-w-3xl mx-auto space-x-4">
+          <input id="chatInput" type="text" placeholder="Message..."
+            class="flex-1 bg-white border border-blue-200 rounded-full px-6 py-4 text-lg outline-none focus:border-blue-500" />
+
+          <button id="chatSendButton" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 transition-all">
+            <span id="chatSendText">➤</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll to Bottom Button -->
+    <button id="scrollToBottomBtn" class="scroll-to-bottom-btn" title="Scroll to bottom">
+      ↓
+    </button>
+  </div>
+
+  <script src="/script.js?v=1.1"></script>
+
+</body>
+
+</html>
