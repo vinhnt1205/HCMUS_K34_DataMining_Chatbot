@@ -229,6 +229,23 @@
     font-size: 0.85rem;
   }
 
+  /* KaTeX math formulas styling */
+  .ai-message .katex {
+    font-size: 1.1em;
+  }
+
+  .ai-message .katex-display {
+    margin: 0.75em 0;
+    padding: 0.5em;
+    background-color: #fafafa;
+    border-radius: 6px;
+    overflow-x: auto;
+  }
+
+  .ai-message .katex-display > .katex {
+    font-size: 1.2em;
+  }
+
   .typing-indicator {
     display: none;
     margin: 8px 0;

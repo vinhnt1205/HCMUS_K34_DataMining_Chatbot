@@ -198,8 +198,29 @@ class ChatbotAPI {
     let charQueue = [];
     let isTypingFinished = false;
 
+    // Helper to render KaTeX math formulas in an element
+    const renderMathInElement = (element) => {
+      if (window.renderMathInElement && element) {
+        try {
+          window.renderMathInElement(element, {
+            delimiters: [
+              { left: '$$', right: '$$', display: true },
+              { left: '$', right: '$', display: false },
+              { left: '\\[', right: '\\]', display: true },
+              { left: '\\(', right: '\\)', display: false },
+              { left: '[ ', right: ' ]', display: true },  // Handle "[ formula ]" format
+            ],
+            throwOnError: false,
+            ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+          });
+        } catch (e) {
+          console.warn('KaTeX render error:', e);
+        }
+      }
+    };
+
     // Helper to apply formatting (markdown + citations) to partial text
-    const formatText = (text, contexts) => {
+    const formatText = (text, contexts, targetElement = null) => {
       let result = text || "";
       // Remove [CLARIFY] early if present
       result = result.replace(/(\*\*)?\[CLARIFY\](\*\*)?/gi, "");
@@ -223,7 +244,15 @@ class ChatbotAPI {
           const normalized = result.replace(/\\n/g, '\n');
           let html = window.marked.parse(normalized);
           // Ensure links open in new tab
-          return html.replace(/<a /g, '<a target="_blank" rel="noreferrer" ');
+          html = html.replace(/<a /g, '<a target="_blank" rel="noreferrer" ');
+          
+          // If targetElement provided, render and apply KaTeX
+          if (targetElement) {
+            targetElement.innerHTML = html;
+            renderMathInElement(targetElement);
+            return targetElement.innerHTML;
+          }
+          return html;
         }
         return result;
       } catch (e) {
@@ -240,7 +269,7 @@ class ChatbotAPI {
 
           // Render markdown incrementally every few characters or on newline to be efficient
           // but actually doing it every char is fine for gpt-4o-mini length
-          contentDiv.innerHTML = formatText(displayedText, contexts);
+          formatText(displayedText, contexts, contentDiv);
 
           this.scrollToBottom();
           await new Promise(r => setTimeout(r, 10));
@@ -250,7 +279,7 @@ class ChatbotAPI {
         }
       }
       // Final final render to be absolutely sure
-      contentDiv.innerHTML = formatText(fullText, contexts);
+      formatText(fullText, contexts, contentDiv);
       this.scrollToBottom();
     };
 
@@ -383,6 +412,24 @@ class ChatbotAPI {
             a.setAttribute('target', '_blank');
             a.setAttribute('rel', 'noreferrer');
           });
+          // Render KaTeX math formulas
+          if (window.renderMathInElement) {
+            try {
+              window.renderMathInElement(contentDiv, {
+                delimiters: [
+                  { left: '$$', right: '$$', display: true },
+                  { left: '$', right: '$', display: false },
+                  { left: '\\[', right: '\\]', display: true },
+                  { left: '\\(', right: '\\)', display: false },
+                  { left: '[ ', right: ' ]', display: true },
+                ],
+                throwOnError: false,
+                ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+              });
+            } catch (e) {
+              console.warn('KaTeX render error:', e);
+            }
+          }
         } else {
           contentDiv.textContent = renderContent;
         }
